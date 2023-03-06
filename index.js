@@ -34,15 +34,21 @@ startGameBtn.addEventListener('click', () => {
 
 resetGameBtn.addEventListener('click', resetGame)
 
-function makeMove(gameCell) {
-    if (gameCell.classList.contains('player1') || gameCell.classList.contains('player2')) return
+function makeMove(column) {
+    const gameCells = column.children
+    let lastMove = null
+    
+    for (let i = gameCells.length - 1; i >= 0; i--) {
+        const currentGameCell = gameCells[i]
+        if (!currentGameCell.classList.contains('player1') && !currentGameCell.classList.contains('player2')) {
+            currentGameCell.classList.add(currentPlayer.class)
+            lastMove = { column: currentGameCell.dataset.column, row: currentGameCell.dataset.row }
+            numMovesDone++
+            break
+        }
+    }
 
-    gameCell.classList.add(currentPlayer.class)
-    numMovesDone++
-
-    // TODO: Implement column-based move making and checks
-
-    if (didPlayerWin()) {
+    if (didPlayerWin(lastMove)) {
         alert(`${currentPlayer.name} Won!`)
     } else if (numMovesDone >= CONNECT_N_SIZE_MAP[connectNSize].maxMoves) {
         alert('Tie!')
@@ -56,14 +62,107 @@ function setCurrentPlayerHeading() {
     currentPlayerHeading.innerText = `${currentPlayer.name}'s Turn`
 }
 
-function didPlayerWin() {
+function didPlayerWin(lastMove) {
     if (numMovesDone < CONNECT_N_SIZE_MAP[connectNSize].minMovesToWin) return false
     
     // Search array outwards from the last move
-    // Check if there are winCondition in a row of same player pieces
-    // If there are, return true
+    // Check if the number of pieces in a row of same player pieces in any direction is equal to the win condition
+    // If there is, return true
     // If not, return false
+    let { column, row } = lastMove
+    column = parseInt(column)
+    row = parseInt(row)
+    const winCondition = CONNECT_N_SIZE_MAP[connectNSize].winCondition
+    const playerClass = currentPlayer.class
+    let numInARow = 1
+
+    // Check horizontal
+    for (let i = column - 1; i >= 0; i--) {
+        const gameCell = document.querySelector(`[data-column="${i}"][data-row="${row}"]`)
+        if (gameCell.classList.contains(playerClass)) {
+            numInARow++
+        } else {
+            break
+        }
+    }
+
+    for (let i = column + 1; i < CONNECT_N_SIZE_MAP[connectNSize].columns; i++) {
+        const gameCell = document.querySelector(`[data-column="${i}"][data-row="${row}"]`)
+        if (gameCell.classList.contains(playerClass)) {
+            numInARow++
+        } else {
+            break
+        }
+    }
+
+    if (numInARow >= winCondition) return true
+
+    // Check vertical
+    numInARow = 1
+    for (let i = row - 1; i >= 0; i--) {
+        const gameCell = document.querySelector(`[data-column="${column}"][data-row="${i}"]`)
+        if (gameCell.classList.contains(playerClass)) {
+            numInARow++
+        } else {
+            break
+        }
+    }
+
+    for (let i = row + 1; i < CONNECT_N_SIZE_MAP[connectNSize].rows; i++) {
+        const gameCell = document.querySelector(`[data-column="${column}"][data-row="${i}"]`)
+        if (gameCell.classList.contains(playerClass)) {
+            numInARow++
+        } else {
+            break
+        }
+    }
+
+    if (numInARow >= winCondition) return true
+
+    // Check diagonal (top left to bottom right)
+    numInARow = 1
+    for (let i = column - 1, j = row - 1; i >= 0 && j >= 0; i--, j--) {
+        const gameCell = document.querySelector(`[data-column="${i}"][data-row="${j}"]`)
+        if (gameCell.classList.contains(playerClass)) {
+            numInARow++
+        } else {
+            break
+        }
+    }
+
+    for (let i = column + 1, j = row + 1; i < CONNECT_N_SIZE_MAP[connectNSize].columns && j < CONNECT_N_SIZE_MAP[connectNSize].rows; i++, j++) {
+        const gameCell = document.querySelector(`[data-column="${i}"][data-row="${j}"]`)
+        if (gameCell.classList.contains(playerClass)) {
+            numInARow++
+        } else {
+            break
+        }
+    }
+
+    if (numInARow >= winCondition) return true
+
+    // Check diagonal (top right to bottom left)
+    numInARow = 1
     
+    for (let i = column + 1, j = row - 1; i < CONNECT_N_SIZE_MAP[connectNSize].columns && j >= 0; i++, j--) {
+        const gameCell = document.querySelector(`[data-column="${i}"][data-row="${j}"]`)
+        if (gameCell.classList.contains(playerClass)) {
+            numInARow++
+        } else {
+            break
+        }
+    }
+
+    for (let i = column - 1, j = row + 1; i >= 0 && j < CONNECT_N_SIZE_MAP[connectNSize].rows; i--, j++) {
+        const gameCell = document.querySelector(`[data-column="${i}"][data-row="${j}"]`)
+        if (gameCell.classList.contains(playerClass)) {
+            numInARow++
+        } else {
+            break
+        }
+    }
+
+    if (numInARow >= winCondition) return true
 
     return false
 }
@@ -86,14 +185,13 @@ function createGameBoard() {
         const column = document.createElement('div')
         column.classList.add('column')
         column.setAttribute('data-column', i)
-        // column.addEventListener('click', () => makeMove(column))
+        column.addEventListener('click', () => makeMove(column))
 
         for (let j = 0; j < rows; j++) {
             const gameCell = document.createElement('div')
             gameCell.classList.add('game-cell')
             gameCell.setAttribute('data-column', i)
             gameCell.setAttribute('data-row', j)
-            gameCell.addEventListener('click', () => makeMove(gameCell))
             column.appendChild(gameCell)
         }
 
