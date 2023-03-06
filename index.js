@@ -20,10 +20,10 @@ let connectNSize = 0;
 const board = document.getElementById("game-board");
 const startGameBtn = document.getElementById("start-game-btn");
 const resetGameBtn = document.getElementById("reset-game-btn");
-const currentPlayerHeadingContainer = document.getElementById(
-  "current-player-heading-container"
+const currentGameHeadingContainer = document.getElementById(
+  "current-game-heading-container"
 );
-const currentPlayerHeading = document.getElementById("current-player-heading");
+const currentGameHeading = document.getElementById("current-game-heading");
 const gameBoard = document.getElementById("game-board");
 const gameForm = document.getElementById("game-form");
 
@@ -63,19 +63,39 @@ function makeMove(column) {
   }
 
   if (didPlayerWin(lastMove)) {
-    alert(`${currentPlayer.name} Won!`);
+    endGame('win');
   } else if (numMovesDone >= CONNECT_N_SIZE_MAP[connectNSize].maxMoves) {
-    alert("Tie!");
+    endGame('draw');
   } else {
     currentPlayer = currentPlayer === player1 ? player2 : player1;
-    setCurrentPlayerHeading();
+    setGameHeading();
   }
 }
 
-function setCurrentPlayerHeading() {
-  currentPlayerHeading.innerText = `${currentPlayer.name}'s Turn`;
-  currentPlayerHeadingContainer.style.display = "grid";
-  currentPlayerHeading.style.display = "block";
+function endGame(result) {
+    setGameHeading(result);
+    const clone = gameBoard.cloneNode(true)
+    clone.querySelectorAll('.column').forEach(column => {
+        column.classList.add('disabled');
+        column.removeEventListener('click', () => makeMove(column.parentNode));
+    });
+    gameBoard.parentNode.replaceChild(clone, gameBoard);
+    
+}
+
+function setGameHeading(result = null) {
+  switch (result) {
+    case "win":
+        currentGameHeading.innerText = `${currentPlayer.name} wins!`;
+        break;
+    case "draw":
+        currentGameHeading.innerText = `Draw!`;
+        break;
+    default:
+        currentGameHeading.innerText = `${currentPlayer.name}'s turn`;
+        break;
+  }
+  
 }
 
 function didPlayerWin(lastMove) {
@@ -217,7 +237,9 @@ function startGame() {
   gameForm.style.display = "none";
   gameBoard.style.display = "grid";
   currentPlayer = player1;
-  setCurrentPlayerHeading(currentPlayer.name);
+  setGameHeading(currentPlayer.name);
+  currentGameHeadingContainer.style.display = "grid";
+  currentGameHeading.style.display = "block";
 }
 
 function createGameBoard() {
@@ -236,7 +258,7 @@ function createGameBoard() {
       gameCell.classList.add("game-cell");
       gameCell.setAttribute("data-column", i);
       gameCell.setAttribute("data-row", j);
-      
+
       column.appendChild(gameCell);
     }
 
@@ -247,11 +269,13 @@ function createGameBoard() {
 function resetGame() {
   gameBoard.innerHTML = "";
   gameBoard.style.display = "none";
+  currentGameHeadingContainer.style.display = "none";
+    gameForm.style.display = "grid";
   numMovesDone = 0;
   currentPlayer = player1;
 }
 
-// player1.name = 'Taylor'
-// player2.name = 'Computer'
-// connectNSize = 4
-// startGame()
+player1.name = 'Taylor'
+player2.name = 'Computer'
+connectNSize = 4
+startGame()
