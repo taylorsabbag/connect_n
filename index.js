@@ -89,19 +89,12 @@ function createGameBoard() {
         // column.addEventListener('click', () => makeMove(column))
 
         for (let j = 0; j < rows; j++) {
-            // TODO: Remove row
-            const row = document.createElement('div')
-            row.classList.add('row')
-            row.setAttribute('data-row', j)
-
             const gameCell = document.createElement('div')
             gameCell.classList.add('game-cell')
             gameCell.setAttribute('data-column', i)
             gameCell.setAttribute('data-row', j)
             gameCell.addEventListener('click', () => makeMove(gameCell))
-            row.appendChild(gameCell)
-
-            column.appendChild(row)
+            column.appendChild(gameCell)
         }
 
         gameBoard.appendChild(column)
