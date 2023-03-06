@@ -186,6 +186,7 @@ button:active {
 
 .column:hover {
   background: hsla(0, 0%, 95%, 50%);
+  border-radius: 1rem;
 }
 
 .game-cell {
