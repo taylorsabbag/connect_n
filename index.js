@@ -63,9 +63,9 @@ function makeMove(column) {
   }
 
   if (didPlayerWin(lastMove)) {
-    endGame('win');
+    endGame("win");
   } else if (numMovesDone >= CONNECT_N_SIZE_MAP[connectNSize].maxMoves) {
-    endGame('draw');
+    endGame("draw");
   } else {
     currentPlayer = currentPlayer === player1 ? player2 : player1;
     setGameHeading();
@@ -73,29 +73,27 @@ function makeMove(column) {
 }
 
 function endGame(result) {
-    setGameHeading(result);
-    const clone = gameBoard.cloneNode(true)
-    clone.querySelectorAll('.column').forEach(column => {
-        column.classList.add('disabled');
-        column.removeEventListener('click', () => makeMove(column.parentNode));
-    });
-    gameBoard.parentNode.replaceChild(clone, gameBoard);
-    
+  setGameHeading(result);
+  const clone = gameBoard.cloneNode(true);
+  clone.querySelectorAll(".column").forEach((column) => {
+    column.classList.add("disabled");
+    column.removeEventListener("click", () => makeMove(column.parentNode));
+  });
+  gameBoard.parentNode.replaceChild(clone, gameBoard);
 }
 
 function setGameHeading(result = null) {
   switch (result) {
     case "win":
-        currentGameHeading.innerText = `${currentPlayer.name} wins!`;
-        break;
+      currentGameHeading.innerText = `${currentPlayer.name} wins!`;
+      break;
     case "draw":
-        currentGameHeading.innerText = `Draw!`;
-        break;
+      currentGameHeading.innerText = `Draw!`;
+      break;
     default:
-        currentGameHeading.innerText = `${currentPlayer.name}'s turn`;
-        break;
+      currentGameHeading.innerText = `${currentPlayer.name}'s turn`;
+      break;
   }
-  
 }
 
 function didPlayerWin(lastMove) {
@@ -270,12 +268,12 @@ function resetGame() {
   gameBoard.innerHTML = "";
   gameBoard.style.display = "none";
   currentGameHeadingContainer.style.display = "none";
-    gameForm.style.display = "grid";
+  gameForm.style.display = "grid";
   numMovesDone = 0;
   currentPlayer = player1;
 }
 
-player1.name = 'Taylor'
-player2.name = 'Computer'
-connectNSize = 4
-startGame()
+player1.name = "Taylor";
+player2.name = "Computer";
+connectNSize = 4;
+startGame();
