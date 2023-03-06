@@ -60,6 +60,8 @@ function makeMove(column) {
 
 function setCurrentPlayerHeading() {
     currentPlayerHeading.innerText = `${currentPlayer.name}'s Turn`
+    currentPlayerHeadingContainer.style.display = 'grid'
+    currentPlayerHeading.style.display = 'block'
 }
 
 function didPlayerWin(lastMove) {
@@ -169,11 +171,9 @@ function didPlayerWin(lastMove) {
 
 function startGame() {
     createGameBoard(connectNSize)
-    setCurrentPlayerHeading(currentPlayer.name)
-    currentPlayerHeadingContainer.style.display = 'grid'
-    currentPlayerHeading.style.display = 'block'
     gameForm.style.display = 'none'
     gameBoard.style.display = 'grid'
+    setCurrentPlayerHeading(currentPlayer.name)
 }
 
 function createGameBoard() {
@@ -206,7 +206,7 @@ function resetGame() {
     currentPlayer = player1
 }
 
-player1.name = 'Taylor'
-player2.name = 'Computer'
-connectNSize = 4
-startGame()
+// player1.name = 'Taylor'
+// player2.name = 'Computer'
+// connectNSize = 4
+// startGame()
