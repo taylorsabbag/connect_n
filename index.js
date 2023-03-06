@@ -236,6 +236,7 @@ function createGameBoard() {
       gameCell.classList.add("game-cell");
       gameCell.setAttribute("data-column", i);
       gameCell.setAttribute("data-row", j);
+      
       column.appendChild(gameCell);
     }
 
