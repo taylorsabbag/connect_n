@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <script src="./index.js" defer></script>
+    <title>Connect N</title>
+</head>
+<body>
+    <header>
+        <h1>Connect N</h1>
+        <button id="reset-game-btn">Reset Game</button>
+    </header>
+
+    <main>
+        <section id="game-form">
+            <h2>Game Setup</h2>
+            <p>
+
+            </p>
+            <label for="player1-name">Player 1</label>
+            <input type="text" id="player1-name" placeholder="e.g. Taylor" required>
+            <label for="player2-name">Player 2</label>
+            <input type="text" id="player2-name" placeholder="e.g. Rachel" required>
+            <label for="connect-n-size">Connect N Win Condition</label>
+            <input type="text" inputmode="numeric" id="connect-n-size" placeholder="3-6" pattern="[3-6]*" required>
+            <p>
+
+            </p>
+            <button id="start-game-btn">Start Game</button>
+        </section>
+
+        <div id="current-player-heading-container">
+            <h2 id="current-player-heading">Current Player</h2>
+        </div>
+
+        <section id="game-board">
+
+        </section>
+    </main>
+
+    <footer>
+        <small>
+            A version of Connect Four by <a href='github.com' target="_blank" title="The author, Taylor Sabbag's, Github page">Taylor Sabbag (Github)</a>
+        </small>
+    </footer>
+</body>
+</html>
