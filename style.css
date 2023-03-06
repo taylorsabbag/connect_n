@@ -150,7 +150,7 @@ button:active {
   color: var(--secondary-color);
 }
 
-#current-player-heading-container {
+#current-game-heading-container {
   display: none;
   place-items: center;
   width: 100%;
@@ -160,7 +160,7 @@ button:active {
   border-radius: 1rem;
 }
 
-#current-player-heading {
+#current-game-heading {
   display: none;
 }
 
@@ -187,6 +187,11 @@ button:active {
 .column:hover {
   background: hsla(0, 0%, 95%, 50%);
   border-radius: 1rem;
+  cursor: pointer;
+}
+
+.column.disabled {
+  cursor: default;
 }
 
 .game-cell {
@@ -195,13 +200,8 @@ button:active {
   border: 1px solid black;
   background: var(--primary-color);
   border-radius: 50%;
-  cursor: pointer;
   margin: 0.5rem;
   box-shadow: inset 0.25rem 0.25rem 0.5rem 1px hsla(0, 0%, 20%, 50%);
-}
-
-.game-cell:disabled {
-  cursor: default;
 }
 
 .player1 {
