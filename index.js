@@ -47,15 +47,15 @@ function makeMove(column) {
   let lastMove = null;
 
   for (let i = gameCells.length - 1; i >= 0; i--) {
-    const currentGameCell = gameCells[i];
+    const gameCell = gameCells[i];
     if (
-      !currentGameCell.classList.contains("player1") &&
-      !currentGameCell.classList.contains("player2")
+      !gameCell.classList.contains("player1") &&
+      !gameCell.classList.contains("player2")
     ) {
-      currentGameCell.classList.add(currentPlayer.class);
+      gameCell.classList.add(currentPlayer.class);
       lastMove = {
-        column: currentGameCell.dataset.column,
-        row: currentGameCell.dataset.row,
+        column: gameCell.dataset.column,
+        row: gameCell.dataset.row,
       };
       numMovesDone++;
       break;
