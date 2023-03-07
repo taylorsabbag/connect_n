@@ -25,7 +25,13 @@
             <label for="player2-name">Player 2</label>
             <input type="text" id="player2-name" placeholder="e.g. Rachel" required>
             <label for="connect-n-size">Connect N Win Condition</label>
-            <input type="text" inputmode="numeric" id="connect-n-size" placeholder="3-6" pattern="[3-6]*" required>
+            <select name="connect-n-size" id="connect-n-size" required>
+                <option value="">Select Board Size</option>
+                <option value="3">3 - 6x5</option>
+                <option value="4">4 - 7x6</option>
+                <option value="5">5 - 8x7</option>
+                <option value="6">6 - 9x8</option>
+            </select>
             <p>
 
             </p>

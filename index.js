@@ -33,7 +33,7 @@ startGameBtn.addEventListener("click", () => {
   player2.name = document.getElementById("player2-name")?.value;
   connectNSize = document.getElementById("connect-n-size")?.value;
 
-  if (player1.name && player2.name && connectNSize) {
+  if (player1.name && player2.name && connectNSize && player1.name !== player2.name) {
     startGame();
   }
 
@@ -144,7 +144,7 @@ function didPlayerWin(lastMove) {
   if (numMovesDone < CONNECT_N_SIZE_MAP[connectNSize].minMovesToWin)
     return false;
 
-  // Search array outwards from the last move
+  // Search board outwards from the last move
   // Check if the number of pieces in a row of same player pieces in any direction is equal to the win condition
   // If there is, return true
   // If not, return false
