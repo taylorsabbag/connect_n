@@ -27,7 +27,7 @@ const currentGameHeading = document.getElementById("current-game-heading");
 const gameBoard = document.getElementById("game-board");
 const gameForm = document.getElementById("game-form");
 
-// Game Functions
+// Event Listeners
 startGameBtn.addEventListener("click", () => {
   player1.name = document.getElementById("player1-name")?.value;
   player2.name = document.getElementById("player2-name")?.value;
@@ -41,6 +41,74 @@ startGameBtn.addEventListener("click", () => {
 });
 
 resetGameBtn.addEventListener("click", resetGame);
+
+// Game Functions
+function startGame() {
+  createGameBoard(connectNSize);
+  gameForm.style.display = "none";
+  gameBoard.style.display = "grid";
+  currentPlayer = player1;
+  setGameHeading(currentPlayer.name);
+  currentGameHeadingContainer.style.display = "grid";
+  currentGameHeading.style.display = "block";
+}
+
+function createGameBoard() {
+  let columns = CONNECT_N_SIZE_MAP[connectNSize].columns;
+  let rows = CONNECT_N_SIZE_MAP[connectNSize].rows;
+  gameBoard.style.gridTemplateColumns = `repeat(${columns}, 1fr)`;
+
+  for (let i = 0; i < columns; i++) {
+    const column = document.createElement("div");
+    column.classList.add("column");
+    column.setAttribute("data-column", i);
+    column.addEventListener("click", () => makeMove(column));
+
+    for (let j = 0; j < rows; j++) {
+      const gameCell = document.createElement("div");
+      gameCell.classList.add("game-cell");
+      gameCell.setAttribute("data-column", i);
+      gameCell.setAttribute("data-row", j);
+
+      column.appendChild(gameCell);
+    }
+
+    gameBoard.appendChild(column);
+  }
+}
+
+function resetGame() {
+  gameBoard.innerHTML = "";
+  gameBoard.style.display = "none";
+  currentGameHeadingContainer.style.display = "none";
+  gameForm.style.display = "grid";
+  numMovesDone = 0;
+  currentPlayer = player1;
+}
+
+function endGame(result) {
+  setGameHeading(result);
+  const clone = gameBoard.cloneNode(true);
+  clone.querySelectorAll(".column").forEach((column) => {
+    column.classList.add("disabled");
+    column.removeEventListener("click", () => makeMove(column.parentNode));
+  });
+  gameBoard.parentNode.replaceChild(clone, gameBoard);
+}
+
+function setGameHeading(result = null) {
+  switch (result) {
+    case "win":
+      currentGameHeading.innerText = `${currentPlayer.name} wins!`;
+      break;
+    case "draw":
+      currentGameHeading.innerText = `Draw!`;
+      break;
+    default:
+      currentGameHeading.innerText = `${currentPlayer.name}'s turn`;
+      break;
+  }
+}
 
 function makeMove(column) {
   const gameCells = column.children;
@@ -69,30 +137,6 @@ function makeMove(column) {
   } else {
     currentPlayer = currentPlayer === player1 ? player2 : player1;
     setGameHeading();
-  }
-}
-
-function endGame(result) {
-  setGameHeading(result);
-  const clone = gameBoard.cloneNode(true);
-  clone.querySelectorAll(".column").forEach((column) => {
-    column.classList.add("disabled");
-    column.removeEventListener("click", () => makeMove(column.parentNode));
-  });
-  gameBoard.parentNode.replaceChild(clone, gameBoard);
-}
-
-function setGameHeading(result = null) {
-  switch (result) {
-    case "win":
-      currentGameHeading.innerText = `${currentPlayer.name} wins!`;
-      break;
-    case "draw":
-      currentGameHeading.innerText = `Draw!`;
-      break;
-    default:
-      currentGameHeading.innerText = `${currentPlayer.name}'s turn`;
-      break;
   }
 }
 
@@ -228,49 +272,6 @@ function didPlayerWin(lastMove) {
   if (numInARow >= winCondition) return true;
 
   return false;
-}
-
-function startGame() {
-  createGameBoard(connectNSize);
-  gameForm.style.display = "none";
-  gameBoard.style.display = "grid";
-  currentPlayer = player1;
-  setGameHeading(currentPlayer.name);
-  currentGameHeadingContainer.style.display = "grid";
-  currentGameHeading.style.display = "block";
-}
-
-function createGameBoard() {
-  let columns = CONNECT_N_SIZE_MAP[connectNSize].columns;
-  let rows = CONNECT_N_SIZE_MAP[connectNSize].rows;
-  gameBoard.style.gridTemplateColumns = `repeat(${columns}, 1fr)`;
-
-  for (let i = 0; i < columns; i++) {
-    const column = document.createElement("div");
-    column.classList.add("column");
-    column.setAttribute("data-column", i);
-    column.addEventListener("click", () => makeMove(column));
-
-    for (let j = 0; j < rows; j++) {
-      const gameCell = document.createElement("div");
-      gameCell.classList.add("game-cell");
-      gameCell.setAttribute("data-column", i);
-      gameCell.setAttribute("data-row", j);
-
-      column.appendChild(gameCell);
-    }
-
-    gameBoard.appendChild(column);
-  }
-}
-
-function resetGame() {
-  gameBoard.innerHTML = "";
-  gameBoard.style.display = "none";
-  currentGameHeadingContainer.style.display = "none";
-  gameForm.style.display = "grid";
-  numMovesDone = 0;
-  currentPlayer = player1;
 }
 
 player1.name = "Taylor";
