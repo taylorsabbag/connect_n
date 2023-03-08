@@ -18,10 +18,12 @@ body {
   font-family: "Roboto", sans-serif;
   background: var(--primary-color);
   color: var(--tertiary-color);
+  height: 100dvh;
 }
 
 header {
   display: flex;
+  position: fixed;
   justify-content: space-between;
   align-items: center;
   width: 100%;
@@ -29,6 +31,7 @@ header {
   background: var(--secondary-color);
   color: var(--primary-color);
   padding-left: 20rem;
+  top: 0;
 }
 
 main {
